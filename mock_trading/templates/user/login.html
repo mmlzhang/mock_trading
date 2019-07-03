@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block etxCSS %}
+    {{ super() }}
+{% endblock %}
+
+{% block etxJS %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div style="height: 150px"></div>
+		<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-4">
+					</div>
+					<div class="col-md-4">
+						<form role="form">
+                            <h1 style="color: red; height: 59px;">登  录</h1>
+							<div class="form-group">
+
+								<label for="exampleInputEmail1">
+									用户名
+								</label>
+								<input type="text" class="form-control" id="exampleInputEmail1" />
+							</div>
+							<div class="form-group">
+
+								<label for="exampleInputPassword1">
+									密码
+								</label>
+								<input type="password" class="form-control" id="exampleInputPassword1" />
+							</div>
+						</form>
+						<button style="background-color: red" type="button" class="btn btn-success" id="bt1" onclick="push()">
+							登录
+						</button>
+					</div>
+					<div class="col-md-4">
+					</div>
+				</div>
+			</div>
+<script>
+function push() {
+	var username = $("#exampleInputEmail1").val();
+	var password = $("#exampleInputPassword1").val();
+	var data = {'username': username, 'password': password};
+    // ajax 获取请求
+	$.ajax({
+		url: '/login',
+		type: 'POST',
+        contentType: "application/json",
+		dataType: 'JSON',
+		data: JSON.stringify(data),
+		success: function (resp) {
+		    location.href='/'
+		},
+		error: function (data) {
+			alert('请求失败!', data.msg)
+		},
+	});
+}
+</script>
+{% endblock %}

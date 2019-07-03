@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    {% block etxCSS %}
+        <link rel="stylesheet" href="/static/css/bootstrap.css">
+    {% endblock %}
+
+    {% block etxJS %}
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/bootstrap.js"></script>
+        <script src="/static/js/template.js"></script>
+    {% endblock %}
+</head>
+<body>
+<div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron">
+                    <h2 style="margin-left: 50px">
+                        BigQuant VMatch
+                    </h2>
+                    <p style="margin-left: 50px">
+                        当前版本: <span id="version"></span>
+                    </p>
+{#                </div>#}
+{#                <div class="jumbotron">#}
+                    <span style="position: relative; left: 75%;">
+                        <a href="/login"><button id="instrumentSearch" class="btn btn-danger btn-sm">
+                                                登录
+                                            </button></a>
+                        <a href="/register"><button id="instrumentSearch" class="btn btn-danger btn-sm">
+                                                注册
+                                            </button></a>
+                        <a href="/logout"><button id="instrumentSearch" class="btn btn-danger btn-sm">
+                                                注销
+                    </button></a>
+                        <a href="/api/clean/data"><button id="instrumentSearch" class="btn btn-danger btn-sm">
+                                                清空数据
+                    </button></a>
+                        <a href="/api/rebuild/tables"><button id="instrumentSearch" class="btn btn-danger btn-sm">
+                                                重新创建所有表
+                    </button></a>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    {% block content %}
+
+    {% endblock %}
+
+
+    <script>
+        $(document).ready(function(){
+        getVersion();
+
+    });
+    function getVersion() {
+        // ajax 获取请求
+        $.ajax({
+            url: '/api/version',
+            type: 'GET',
+            success: function (resp) {
+                $('#version').html(resp.version);
+            },
+            error: function (data) {
+                alert('获取version失败!', data.msg)
+            },
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+
+{% block title %}Vmatch{% endblock %}
+
+{% block etxCSS %}
+    {{ super() }}
+{% endblock %}
+
+{% block etxJS %}
+    {{ super() }}
+    <script src="/static/js/index.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <p style="top: 50px;">
+    <h3><span id="username" style="color: red"></span> 资金: <span id="fund" style="color: red"></span>
+    总委托数: <span id="orders" style="color: red"></span>
+    委托中: <span id="pendingOrders" style="color: red"></span></h3>
+    <div class="form-group" style="position: relative;">
+                        <label for="fundAmount" style="color: red">
+                            模拟资金充值
+                        </label>
+                        <input type="text" class="form-control" id="fundAmount" style="width: 200px;"/>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="Recharge()">
+                        确定
+                    </button>
+    </p>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>
+                    当前委托
+                </h2>
+                <p>
+                <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>股票代码</th>
+                                <th>买入/卖出</th>
+                                <th>数量</th>
+                                <th>委托价</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            <tr class="table-active">
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>取消</td>
+                            </tr>
+
+                            {% raw %}
+                            <script id="orders-list-pending" type="text/html">
+                                {{if orders}}
+                                {{each orders as order}}
+                                {{if "pending" == order.status}}
+                                <tr class="table-active" id="orders-pending">
+                                    <td>{{ order.id }}</td>
+                                    <td>{{ order.instrumentId }}</td>
+                                    <td>{{ order.category }}</td>
+                                    <td>{{ order.count }}</td>
+                                    <td>{{ order.price }}</td>
+                                    <td>{{ order.status }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" onclick="CancelOrder()" id={{ order.id }}>
+                                            取消
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{/if}}
+                                {{/each}}
+                                {{else}}
+                                暂时没有订单。
+                                {{/if}}
+                            </script>
+                            {% endraw %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+                <p>
+
+                </p>
+                <h2>
+                    持仓列表
+                </h2>
+                <p>
+                <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                            <tr><th>编号</th>
+                                <th>股票代码</th>
+                                <th>数量</th>
+                                <th>可交易数量</th>
+                                <th>持仓总价</th>
+                                <th>均价</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody-UserStocks">
+                            <tr class="table-active">
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+
+                            {% raw %}
+                            <script id="user-stocks" type="text/html">
+                                {{if userStocks}}
+                                {{each userStocks as stock}}
+                                <tr class="table-active">
+                                    <td>{{ stock.id }}</td>
+                                    <td>{{ stock.instrument_id }}</td>
+                                    <td>{{ stock.count }}</td>
+                                    <td>{{ stock.available_count }}</td>
+                                    <td>{{ stock.price }}</td>
+                                    <td>{{ stock.unit_price }}</td>
+                                </tr>
+                                {{/each}}
+                                {{else}}
+                                暂时没有订单。
+                                {{/if}}
+                            </script>
+                            {% endraw %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                <p>
+
+                </p>
+
+                <h2>
+                    所有委托
+                </h2>
+                <p>
+                <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                            <tr><th>编号</th>
+                                <th>股票代码</th>
+                                <th>买入/卖出</th>
+                                <th>数量</th>
+                                <th>委托价</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody-all">
+                            <tr class="table-active">
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+
+                            {% raw %}
+                            <script id="orders-list-all" type="text/html">
+                                {{if orderlist}}
+                                {{each orderlist as order1}}
+                                <tr class="table-active">
+                                    <td>{{ order1.id }}</td>
+                                    <td>{{ order1.instrumentId }}</td>
+                                    <td>{{ order1.category }}</td>
+                                    <td>{{ order1.count }}</td>
+                                    <td>{{ order1.price }}</td>
+                                    <td>{{ order1.status }}</td>
+                                </tr>
+                                {{/each}}
+                                {{/if}}
+                            </script>
+                            {% endraw %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+                <p>
+
+                </p>
+
+
+            </div>
+            <div class="col-md-2">
+                <h2>
+                    新建委托
+                </h2>
+                    <div class="form-group">
+
+                        <label>
+                            股票代码
+                        </label>
+                        <input type="text" class="form-control" id="orderInstrumentId" style="width: 200px"/>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="exampleInputPassword1">
+                            数量（股票）
+                        </label>
+                        <input type="text" class="form-control" id="orderInstrumentCount" style="width: 200px" />
+                    </div>
+                     <div class="form-group">
+
+                        <label for="exampleInputPassword1">
+                            委托价
+                        </label>
+                        <input type="text" class="form-control" id="orderInstrumentPrice" style="width: 200px"  />
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="BuyStockOrder()">
+                        买入
+                    </button>
+                <button type="button" class="btn btn-primary" onclick="SellStockOrder()">
+                        卖出
+                    </button>
+                                <div class="row">
+                        <div class="col-md-12">
+                            <h3>
+                                系统使用情况
+                            </h3>
+                            <p>
+                                    当前使用人数为：
+                                    已完成模拟交易数量：（不确定是否显示）
+                                </p>
+                        </div>
+                    </div>
+            </div>
+             <div class="col-md-2">
+                 <h2>
+                    修改行情数据
+                </h2>
+                    <div class="form-group">
+
+                        <label for="exampleInputEmail1">
+                            股票代码
+                        </label>
+                        <input type="text" class="form-control" id="edit-instrument" style="width: 150px"/>
+                        <label for="exampleInputEmail1">
+                            当前价格
+                        </label>
+                        <input type="text" class="form-control" id="edit-price" style="width: 150px"/>
+                        <button id="instrumentSearch" class="btn btn-primary" onclick="EditNowPrice()">
+                        修改
+                    </button>
+                    </div>
+             </div>
+            <div class="col-md-2">
+
+                <h2>
+                    实时行情
+                </h2>
+                    <div class="form-group">
+
+                        <label for="exampleInputEmail1">
+                            股票代码
+                        </label>
+                        <input type="text" class="form-control" id="instrument" style="width: 150px"/>
+                        <button id="instrumentSearch" class="btn btn-primary" onclick="SearchQuotation()">
+                        查询
+                    </button>
+                    </div>
+                <h2>
+                    行情 -  <span id="instrumentId"></span>
+                </h2>
+                <div id="quotation" class="instrument">
+
+                {% raw %}
+                        <script id="quotation-list" type="text/html">
+                            {{if quotations}}
+                            {{each quotations as quotation}}
+                            <ul>
+                                <li style="list-style-type: none"> <span style="font-size: 18px">{{ quotation.key }}: {{ quotation.value }}</span></li>
+                            </ul>
+                            {{/each}}
+                            {{else}}
+                            请输入需要查询的股票编号。
+                            {{/if}}
+                        </script>
+                        {% endraw %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

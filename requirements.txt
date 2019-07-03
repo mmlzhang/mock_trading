@@ -1,0 +1,7 @@
+Flask==1.0.3
+Flask-SQLAlchemy==2.4.0
+easyutils==0.1.7
+requests==2.22.0
+Flask-Compress==1.4.0
+Flask-Cors==3.0.8
+psycopg2-binary==2.8.3
