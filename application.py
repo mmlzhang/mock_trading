@@ -1,7 +1,7 @@
 
-from mock_trading.base_application import create_app
+from big_vmatch.base_application import create_app
 
-from mock_trading.constant import ENVIRONMENT
+from big_vmatch.constant import ENVIRONMENT
 
 application = create_app(ENVIRONMENT)
 

@@ -4,9 +4,7 @@ import os
 
 class BaseConfig(object):
 
-    _token = "#"
-    DING_TALK_URL = os.environ.get("DING_TALK_URL",
-                                   "https://oapi.dingtalk.com/robot/send?access_token={0}".format(_token))
+    DING_TALK_URL = os.environ.get("DING_TALK_URL", "https://oapi.dingtalk.com/robot/send?access_token=#")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get("SQLALCHEMY_TRACK_MODIFICATIONS", True)
 
@@ -25,9 +23,6 @@ class Config(BaseConfig):
     REDIS_PORT = os.environ.get("REDIS_PORT", "6379")
     SQLALCHEMY_DATABASE_URI = 'postgresql+pygresql://{0}:{1}@{2}:{3}/{4}'.format(
         DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
-
-    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@{2}:{3}/{4}?charset=utf8".format(
-    #     DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
     SQLALCHEMY_ECHO = os.environ.get("SQLALCHEMY_ECHO", False)
 
 
@@ -37,7 +32,6 @@ class TestConfig(BaseConfig):
     DEBUG = True
     # debug show sql
     SQLALCHEMY_ECHO = True
-    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://test:123456@127.0.0.1:3306/bigvmatch?charset=utf8"
     SQLALCHEMY_DATABASE_URI = 'postgres://postgres:123456@127.0.0.1:5432/bigvmatch'
 
 

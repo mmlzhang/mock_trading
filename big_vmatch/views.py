@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import Blueprint, render_template, jsonify, request, g
 
-from mock_trading import __version__
+from big_vmatch import __version__
 from .dao import db
 from .dao.api import get_available_user_fund, get_available_user_stocks_count, get_order_list, process_orders, \
     freeze_user_fund, freeze_user_stock, get_user_stocks, release_freeze_user_stock
@@ -13,7 +13,7 @@ from .author import login_required
 from .constant import DEFAULT_INSTRUMENT_ID
 from .status_code import SUCCESS_CODE
 from .exceptions import MessageContentException
-from .quotations.api import get_now_price_map
+from .quotations.api import get_now_price_map, is_instrument_id
 
 main_blueprint = Blueprint('trading', __name__)
 
@@ -52,7 +52,7 @@ def get_orders():
 def option_order(option):
     # 买入/卖出 委托
     instrument_id = request.json.get("id") if request.json.get("id") else DEFAULT_INSTRUMENT_ID
-    if not get_now_price_map(instrument_ids=[instrument_id]).get(instrument_id):
+    if not is_instrument_id(instrument_id):
         raise MessageContentException("股票代码错误!")
     count = request.json.get("count")
     price = request.json.get("price")
@@ -140,7 +140,7 @@ def get_user_stock_api():
 def edit_quotation():
     # 修改股票当前的价格, 检查已有委托是否达可以成交
     instrument_id = request.json.get("id") if request.json.get("id") else DEFAULT_INSTRUMENT_ID
-    if not get_now_price_map(instrument_ids=[instrument_id]).get(instrument_id):
+    if not is_instrument_id(instrument_id):
         raise MessageContentException("股票代码错误!")
     price = float(request.json.get("price").strip())
     order_list = get_order_list(user_id=g.user.id, instrument_id=instrument_id, status=OrderStatus.pending)

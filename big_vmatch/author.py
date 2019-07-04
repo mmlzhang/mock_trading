@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, g, request, Response, jsonify
 
 from .dao import db
 from .dao.models.vmatch import User, Fund, Order
-from .constant import HEADER_TOKEN_NAME, REGISTER_TOKEN
+from .constant import HEADER_TOKEN_NAME
 from .exceptions import LoginRequiredException, MessageContentException
 from .utils.dto_vmatch import OrderStatus
 from .status_code import SUCCESS_CODE
@@ -41,13 +41,13 @@ def register():
         username = request.json.get("username").strip()
         password = request.json.get("password").strip()
         re_password = request.json.get("rePassword").strip()
-        token = request.json.get("token").strip()
+        # token = request.json.get("token").strip()
         if not username or not password or not re_password:
             raise MessageContentException("username and password is required!")
         if password != re_password:
             raise MessageContentException("password difference!")
-        if token != REGISTER_TOKEN:
-            return MessageContentException("token error!")
+        # if token != REGISTER_TOKEN:
+        #     return MessageContentException("token error!")
         user = User.query.filter(User.name == username).filter(User.is_active.is_(True)).first()
         if user:
             raise MessageContentException("user already exists!")

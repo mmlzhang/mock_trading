@@ -3,7 +3,7 @@
 import requests
 from flask import current_app
 
-from mock_trading import __version__
+from big_vmatch import __version__
 
 
 class Colors(object):

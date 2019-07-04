@@ -4,7 +4,7 @@ import re
 
 from setuptools import setup, find_packages
 
-PROJECT = 'mock_trading'
+PROJECT = 'big_vmatch'
 
 
 DESCRIPTION = 'bigquant mock trading service'
@@ -24,7 +24,7 @@ def find_version(*file_paths):
 
 setup(
     name=PROJECT,
-    version=find_version("mock_trading", "__init__.py"),
+    version=find_version("big_vmatch", "__init__.py"),
     description=DESCRIPTION,
 
     author='lanms',

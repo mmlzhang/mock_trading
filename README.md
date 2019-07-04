@@ -14,10 +14,6 @@ ALTER USER {USER} PASSWORD '{PASSWORD}';
 
 ```
 
-### 项目配置
-- 在settions.py中修改_token为自己的dingding webhook token
-- 在constant中修改salt加密口令,确保安全
-
 ### 运行项目
 `python application.py`
 

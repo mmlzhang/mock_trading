@@ -1,6 +1,5 @@
 
 $(document).ready(function(){
-    SearchQuotation();
     UpdateUserInfo();
     UpdateCurrentOrders();
     UpdateQuotation();
@@ -9,17 +8,12 @@ $(document).ready(function(){
 
     window.setInterval(function () {
         UpdateQuotation();
-        // UpdateAllOrders();
-        // UpdateCurrentOrders();
-        // UpdateUserStocks();
-        // UpdateUserInfo();
         var pending_orders = $("#orders-pending");
         if (pending_orders.length > 0) {
             UpdateUserInfo();
             UpdateCurrentOrders();
             UpdateAllOrders();
             UpdateUserStocks();
-
         }
     }, 2000)
 });
@@ -50,7 +44,23 @@ function UpdateUserInfo() {
 // 查询行情
 function SearchQuotation() {
     var instrument = $("#instrument").val();
-    QuotationShow(instrument)
+    $.ajax({
+        url: '/api/quotation?instrumentId=' + instrument,
+        type: 'GET',
+        dataType: 'json',
+        success: function (quotations) {
+            if (quotations.length > 0) {
+                var quotations_html = template('quotation-list', {quotations: quotations});
+                $('#quotation').html(quotations_html);
+                $("#instrumentId").html(instrument)
+            } else {
+                console.log("股票代码错误!")
+            }
+            },
+        error: function (resp) {
+            alert(resp.responseJSON.msg);
+        },
+    });
 }
 
 
